@@ -5,259 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secretaria de Educação - Portal da Transparência</title>
     <link rel="icon" type="image/png" href="SEMES.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ESTILOS CSS BASE E PARA O PORTAL DA TRANSPARÊNCIA */
+        /* Cores Personalizadas para Tailwind */
         :root {
-            --cor-principal-verde: #28a745;
-            --cor-secundaria-azul: #007bff;
-            --cor-fundo-branco: #ffffff;
-            --cor-texto-preto: #333333;
-            --cor-detalhe-cinza: #f8f9fa;
-            --cor-borda-documento: #dee2e6;
+            --color-primary-green: #28a745;
+            --color-secondary-blue: #007bff;
+            --color-bg-white: #ffffff;
+            --color-text-dark: #333333;
+            --color-detail-lightgray: #f8f9fa;
+            --color-border-document: #dee2e6;
         }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--cor-detalhe-cinza);
-            color: var(--cor-texto-preto);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+        /* Configurações Tailwind para usar variáveis CSS */
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+
+        html, body {
+            font-family: 'Inter', sans-serif; /* Usando Inter para um visual mais moderno */
+            scroll-behavior: smooth;
         }
 
-        header {
-            background: linear-gradient(135deg, var(--cor-principal-verde) 0%, var(--cor-secundaria-azul) 100%);
-            color: var(--cor-fundo-branco);
-            padding: 2rem 1rem; /* Padding ajustado */
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            position: relative; /* Essencial para posicionar o botão de acesso */
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: rgba(255, 255, 255, 0.05);
-            transform: rotate(25deg);
-            z-index: 0;
-        }
-        
-        header h1, header p, header .search-bar {
-            position: relative;
-            z-index: 1;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.8em;
-            font-weight: 600;
-        }
-
-        header p {
-            font-size: 1.1em;
-            margin-top: 0.5rem;
-            margin-bottom: 1.5rem; /* Espaço antes da barra de pesquisa */
-        }
-
-        .container {
-            flex-grow: 1;
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-        }
-
-        /* --- ESTILOS PARA A BARRA DE PESQUISA NO CABEÇALHO --- */
-        header .search-bar {
-            display: flex;
-            width: 100%;
-            max-width: 600px; /* Limita a largura em telas grandes */
-            margin-bottom: 1rem; /* Espaço final no cabeçalho */
-        }
-
-        header .search-bar input[type="text"] {
-            flex-grow: 1;
-            padding: 0.8rem 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            background-color: rgba(255, 255, 255, 0.15);
-            color: var(--cor-fundo-branco);
-            font-size: 1em;
-            outline: none;
-            transition: background-color 0.3s ease;
-            border-radius: 8px 0 0 8px; /* Cantos arredondados apenas à esquerda */
-        }
-
-        header .search-bar input[type="text"]::placeholder {
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        header .search-bar input[type="text"]:focus {
-            background-color: rgba(255, 255, 255, 0.25);
-        }
-
-        header .search-bar button {
-            background-color: var(--cor-fundo-branco);
-            color: var(--cor-secundaria-azul);
-            border: none;
-            padding: 0.8rem 1.5rem;
-            cursor: pointer;
-            font-size: 1em;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: background-color 0.3s ease;
-            border-radius: 0 8px 8px 0; /* Cantos arredondados apenas à direita */
-        }
-        
-        header .search-bar button:hover {
-            background-color: #e2e6ea;
-        }
-
-        /* ESTILO PARA EXIBIR OS CARDS LADO A LADO E RESPONSIVAMENTE */
-        .document-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem; /* Espaço entre os cards */
-            justify-content: start; /* Adicionado para alinhar os cards à esquerda */
-        }
-
-        .document-card {
-            background-color: var(--cor-fundo-branco);
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            border-top: 6px solid var(--cor-principal-verde);
-        }
-
-        .document-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .document-header {
-            padding: 1.2rem 1.5rem;
-            background-color: var(--cor-detalhe-cinza);
-            border-bottom: 1px solid var(--cor-borda-documento);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .document-header .icon {
-            font-size: 2.5em;
-            color: var(--cor-secundaria-azul);
-        }
-
-        .document-header h3 {
-            margin: 0;
-            font-size: 1.4em;
-            color: var(--cor-texto-preto);
-            flex-grow: 1;
-        }
-
-        .document-body {
-            padding: 1.5rem;
-            flex-grow: 1;
-        }
-        .document-body p { color: #555; }
-
-        .document-preview {
-            width: 100%; height: 250px;
-            border: 1px solid var(--cor-borda-documento);
-            border-radius: 8px; overflow: hidden;
-            margin-top: 1rem; background-color: #f0f0f0;
-        }
-        .document-preview iframe { width: 100%; height: 100%; border: none; }
-
-        .document-footer {
-            padding: 1.2rem 1.5rem;
-            background-color: var(--cor-detalhe-cinza);
-            border-top: 1px solid var(--cor-borda-documento);
-            text-align: right;
-        }
-
-        .document-footer a {
-            background-color: var(--cor-principal-verde);
-            color: var(--cor-fundo-branco);
-            text-decoration: none; padding: 0.7rem 1.2rem;
-            border-radius: 6px; font-weight: 600;
-            transition: background-color 0.3s ease;
-            display: inline-flex; align-items: center; gap: 0.5rem;
-        }
-        .document-footer a:hover { background-color: #218838; }
-
-        footer {
-            background-color: var(--cor-texto-preto);
-            color: var(--cor-fundo-branco);
-            text-align: center;
-            padding: 1.5rem 0;
-            margin-top: 3rem;
-        }
-
-        /* LOADING SPINNER */
+        /* Loading Spinner - Mantido com classes Tailwind e pequenas melhorias */
         .loading-spinner {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 9999; opacity: 0; visibility: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.85); /* Mais opaco */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-        .loading-spinner.visible { opacity: 1; visibility: visible; }
+        .loading-spinner.visible {
+            opacity: 1;
+            visibility: visible;
+        }
         .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px;
-            border-radius: 50%; border-left-color: var(--cor-principal-verde);
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 48px; /* Maior */
+            height: 48px; /* Maior */
+            border-radius: 50%;
+            border-left-color: var(--color-primary-green);
             animation: spin 1s ease infinite;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* MEDIA QUERIES */
-        @media (max-width: 768px) {
-            header { padding: 4rem 1rem 1rem 1rem; /* Aumenta o padding no topo para o botão não sobrepor o título */ }
-            header h1 { font-size: 2em; }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body>
+<body class="flex flex-col min-h-screen bg-gray-100 text-gray-800">
+    <!-- Loading Spinner -->
     <div class="loading-spinner" id="loadingSpinner">
         <div class="spinner"></div>
     </div>
 
-    <header>
+    <!-- Header Section -->
+    <header class="relative bg-gradient-to-br from-green-600 to-blue-600 text-white p-8 md:p-12 text-center shadow-lg overflow-hidden flex flex-col items-center justify-center">
+        <!-- Background Overlay for Effect -->
+        <div class="absolute inset-0 bg-white opacity-5 transform -skew-y-3 z-0"></div>
         
-        <h1><i class="fas fa-graduation-cap"></i> Portal da Transparência</h1>
-        <p>Secretaria de Educação</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2 relative z-10 flex items-center justify-center gap-3">
+            <i class="fas fa-graduation-cap text-green-200"></i> Portal da Transparência
+        </h1>
+        <p class="text-lg md:text-xl font-light mb-8 relative z-10">Secretaria de Educação</p>
         
-        <!-- A BARRA DE PESQUISA FOI MOVIDA PARA O CABEÇALHO -->
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Pesquisar documentos por título ou descrição...">
-            <button id="searchButton"><i class="fas fa-search"></i></button>
+        <!-- Search Bar -->
+        <div class="relative z-10 flex w-full max-w-xl shadow-md rounded-lg overflow-hidden">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Pesquisar documentos por título ou descrição..." 
+                class="flex-grow p-3 text-lg bg-white bg-opacity-20 text-white placeholder-gray-200 border-none focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
+            >
+            <button 
+                id="searchButton" 
+                class="bg-white text-blue-600 px-5 py-3 text-lg font-semibold hover:bg-blue-100 transition-colors duration-200 flex items-center gap-2"
+            >
+                <i class="fas fa-search"></i>
+            </button>
         </div>
     </header>
 
-    <div class="container">
-        <div class="document-grid" id="documentGrid">
+    <!-- Main Content Container -->
+    <div class="container mx-auto p-4 md:p-8 pt-6 md:pt-10 flex-grow"> 
+        
+        <!-- Document Grid -->
+        <!-- Adicionado 'justify-center' para centralizar os balões (cards) em telas menores -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-center" id="documentGrid">
             <!-- Os cards dos documentos serão inseridos aqui pelo JavaScript -->
-            <p id="noPublicDocumentsMessage" style="text-align: center; display: none; grid-column: 1 / -1; margin-top: 2rem;">
+            <p id="noPublicDocumentsMessage" class="text-center text-gray-600 text-xl col-span-full mt-8 hidden">
                 Nenhum documento disponível no momento.
             </p>
         </div>
     </div>
 
-    <footer>
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-white text-center p-6 mt-12 shadow-inner">
         &copy; 2025 Secretaria de Educação. Todos os direitos reservados.
     </footer>
 
@@ -266,7 +120,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
-        // SUA CONFIGURAÇÃO FIREBASE
+        // SUA CONFIGURAÇÃO FIREBASE (MANTIDA DO CÓDIGO ORIGINAL)
         const firebaseConfig = {
           apiKey: "AIzaSyChgagT-tMJk9QZjMybdhd7F0pPKPsO7FM",
           authDomain: "aprenda-b57c1.firebaseapp.com",
@@ -283,7 +137,7 @@
         const db = getDatabase(app);
         const appId = firebaseConfig.projectId;
 
-        let allPublicDocuments = [];
+        let allPublicDocuments = []; // Armazena todos os documentos para filtragem
 
         // ELEMENTOS DO DOM
         const loadingSpinner = document.getElementById('loadingSpinner');
@@ -293,9 +147,25 @@
         const noPublicDocumentsMessage = document.getElementById('noPublicDocumentsMessage');
 
         // --- FUNÇÕES AUXILIARES ---
-        function showLoading() { loadingSpinner.classList.add('visible'); }
-        function hideLoading() { loadingSpinner.classList.remove('visible'); }
+        /**
+         * Exibe o spinner de carregamento.
+         */
+        function showLoading() { 
+            loadingSpinner.classList.add('visible'); 
+        }
+
+        /**
+         * Oculta o spinner de carregamento.
+         */
+        function hideLoading() { 
+            loadingSpinner.classList.remove('visible'); 
+        }
         
+        /**
+         * Tenta converter uma URL do Google Drive para um formato incorporável (preview).
+         * @param {string} url - A URL do documento.
+         * @returns {string} A URL incorporável ou a URL original se não for do Drive.
+         */
         function getEmbeddableUrl(url) {
             try {
                 const urlObj = new URL(url);
@@ -310,49 +180,88 @@
             } catch (e) {
                 console.warn("URL inválida ou não conversível:", url);
             }
-            return url;
+            return url; // Retorna a URL original se não for do Google Drive ou inválida
         }
 
         // --- FUNÇÕES DE RENDERIZAÇÃO ---
+        /**
+         * Cria e retorna um elemento de card de documento (div).
+         * @param {object} doc - Objeto contendo os dados do documento (id, title, description, documentUrl, iconClass).
+         * @returns {HTMLElement} O elemento div do card de documento.
+         */
         function createDocumentCard(doc) {
             const card = document.createElement('div');
-            card.className = 'document-card';
+            // Classes Tailwind para estilização do card:
+            // bg-white: fundo branco
+            // rounded-xl: bordas arredondadas maiores
+            // shadow-lg: sombra mais proeminente
+            // overflow-hidden: esconde conteúdo que exceda as bordas
+            // transform: permite transições suaves (para hover)
+            // hover:scale-105: aumenta ligeiramente no hover
+            // hover:shadow-2xl: sombra maior no hover
+            // transition-all duration-300: transição suave para todas as propriedades em 300ms
+            // flex flex-col: usa flexbox para organizar o conteúdo verticalmente
+            // border-t-8 border-green-500: borda superior verde mais grossa
+            card.className = 'bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 hover:shadow-2xl transition-all duration-300 flex flex-col border-t-8 border-green-500';
+            
             const embedUrl = getEmbeddableUrl(doc.documentUrl);
 
             card.innerHTML = `
-                <div class="document-header">
-                    <i class="icon ${doc.iconClass}"></i>
-                    <h3>${doc.title}</h3>
+                <div class="p-5 md:p-6 bg-gray-50 border-b border-gray-200 flex items-center gap-4">
+                    <i class="text-4xl ${doc.iconClass} text-blue-500"></i>
+                    <h3 class="text-xl md:text-2xl font-semibold text-gray-900 flex-grow">${doc.title}</h3>
                 </div>
-                <div class="document-body">
-                    <p>${doc.description}</p>
-                    <div class="document-preview">
-                        <iframe src="${embedUrl}" title="Pré-visualização de ${doc.title}" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+                <div class="p-5 md:p-6 flex-grow">
+                    <p class="text-gray-700 mb-4 text-base">${doc.description}</p>
+                    <div class="w-full h-56 md:h-64 bg-gray-100 rounded-lg overflow-hidden border border-gray-300 flex items-center justify-center text-gray-500 text-sm">
+                        <iframe 
+                            src="${embedUrl}" 
+                            title="Pré-visualização de ${doc.title}" 
+                            loading="lazy" 
+                            sandbox="allow-scripts allow-same-origin"
+                            class="w-full h-full border-0"
+                            onerror="this.src='https://placehold.co/400x250/F8F8F8/888888?text=Erro+ao+carregar+pr%C3%A9-visualiza%C3%A7%C3%A3o'"
+                        ></iframe>
                     </div>
                 </div>
-                <div class="document-footer">
-                    <a href="${doc.documentUrl}" target="_blank" rel="noopener noreferrer"><i class="fas fa-download"></i> Baixar Documento</a>
+                <div class="p-5 md:p-6 bg-gray-50 border-t border-gray-200 text-right">
+                    <a 
+                        href="${doc.documentUrl}" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg font-bold text-lg hover:bg-green-700 transition-colors duration-200 shadow-md hover:shadow-lg"
+                    >
+                        <i class="fas fa-download"></i> Baixar Documento
+                    </a>
                 </div>
             `;
             return card;
         }
 
+        /**
+         * Renderiza a lista de documentos no grid.
+         * @param {Array<object>} documentsToRender - Array de objetos de documentos a serem exibidos.
+         */
         function renderPublicDocuments(documentsToRender) {
-            documentGrid.innerHTML = '';
+            documentGrid.innerHTML = ''; // Limpa o grid
             if (documentsToRender.length === 0) {
+                // Exibe mensagem de "nenhum documento" se não houver documentos ou a pesquisa não retornar resultados
                 const message = searchInput.value.trim() 
-                    ? `Nenhum documento encontrado para "<strong>${searchInput.value}</strong>".`
+                    ? `Nenhum documento encontrado para "<strong>${searchInput.value.trim()}</strong>".`
                     : "Nenhum documento disponível no momento.";
                 noPublicDocumentsMessage.innerHTML = message;
-                noPublicDocumentsMessage.style.display = 'block';
+                noPublicDocumentsMessage.classList.remove('hidden'); // Mostra a mensagem
             } else {
-                noPublicDocumentsMessage.style.display = 'none';
+                noPublicDocumentsMessage.classList.add('hidden'); // Oculta a mensagem
                 documentsToRender.forEach(doc => {
                     documentGrid.appendChild(createDocumentCard(doc));
                 });
             }
         }
 
+        /**
+         * Filtra os documentos exibidos com base no termo de pesquisa.
+         */
         function filterPublicDocuments() {
             const searchTerm = searchInput.value.toLowerCase().trim();
             const filtered = searchTerm
@@ -360,14 +269,17 @@
                     doc.title.toLowerCase().includes(searchTerm) ||
                     doc.description.toLowerCase().includes(searchTerm)
                 )
-                : allPublicDocuments;
+                : allPublicDocuments; // Se o termo de pesquisa estiver vazio, exibe todos
             
             renderPublicDocuments(filtered);
         }
 
         // --- CARREGAMENTO INICIAL DOS DADOS ---
+        /**
+         * Carrega os documentos do Firebase Realtime Database.
+         */
         function loadInitialData() {
-            showLoading();
+            showLoading(); // Exibe o spinner
             const documentsRef = ref(db, `artifacts/${appId}/public/data/documents`);
 
             onValue(documentsRef, (snapshot) => {
@@ -379,23 +291,28 @@
                     });
                 });
 
-                allPublicDocuments = fetchedDocuments.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); // Ordena pelos mais recentes
-                filterPublicDocuments();
-                hideLoading();
+                // Ordena os documentos pelos mais recentes (assumindo um timestamp existe)
+                allPublicDocuments = fetchedDocuments.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                
+                filterPublicDocuments(); // Renderiza os documentos (filtrados ou todos)
+                hideLoading(); // Oculta o spinner
             }, (error) => {
+                // Em caso de erro ao carregar dados
                 console.error("Erro ao carregar documentos do Firebase:", error);
-                noPublicDocumentsMessage.textContent = "Erro ao carregar os documentos. Tente novamente mais tarde.";
-                noPublicDocumentsMessage.style.display = 'block';
+                noPublicDocumentsMessage.innerHTML = "Erro ao carregar os documentos. Tente novamente mais tarde.";
+                noPublicDocumentsMessage.classList.remove('hidden');
                 hideLoading();
             });
         }
 
         // --- EVENT LISTENERS ---
+        // Adiciona um listener para cada vez que o usuário digita na barra de pesquisa
         searchInput.addEventListener('input', filterPublicDocuments);
+        // Adiciona um listener para o clique no botão de pesquisa (também chama o filtro)
         searchButton.addEventListener('click', filterPublicDocuments);
         
-        // Inicia a aplicação
-        loadInitialData();
+        // Inicia a aplicação quando o DOM estiver completamente carregado
+        window.addEventListener('load', loadInitialData);
 
     </script>
 </body>
