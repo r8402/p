@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração - Portal da Transparência</title>
+    <link rel="icon" type="image/png" href="SEMES.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ESTILOS CSS GERAIS (MANTIDOS PARA CONSISTÊNCIA) */
+        :root {
+            --cor-principal-verde: #28a745;
+            --cor-secundaria-azul: #007bff;
+            --cor-fundo-branco: #ffffff;
+            --cor-texto-preto: #333333;
+            --cor-detalhe-cinza: #f8f9fa;
+            --cor-borda-documento: #dee2e6;
+            --cor-alerta-vermelho: #dc3545;
+            --cor-sucesso-verde: #28a745;
+            --cor-edicao-amarelo: #ffc107;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--cor-detalhe-cinza);
+            color: var(--cor-texto-preto);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--cor-principal-verde) 0%, var(--cor-secundaria-azul) 100%);
+            color: var(--cor-fundo-branco);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ESTILOS DO PAINEL DE ADMIN */
+        .panel-section {
+            background-color: var(--cor-fundo-branco);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--cor-principal-verde);
+            margin-bottom: 2rem;
+        }
+
+        .panel-section h2 {
+            color: var(--cor-principal-verde);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--cor-borda-documento);
+            padding-bottom: 0.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: .5rem;
+            font-weight: 600;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="url"],
+        .form-group textarea {
+            width: calc(100% - 24px);
+            padding: 10px;
+            border: 1px solid var(--cor-borda-documento);
+            border-radius: 6px;
+            font-size: 1em;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .form-actions button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .form-actions button.primary {
+            background-color: var(--cor-principal-verde);
+            color: var(--cor-fundo-branco);
+        }
+        .form-actions button.secondary {
+            background-color: #6c757d;
+            color: var(--cor-fundo-branco);
+        }
+
+        .document-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        .document-table th, .document-table td {
+            border: 1px solid var(--cor-borda-documento);
+            padding: 10px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .document-table th {
+            background-color: var(--cor-detalhe-cinza);
+            font-weight: 600;
+            color: var(--cor-secundaria-azul);
+        }
+
+        .table-actions button {
+            padding: 6px 10px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .table-actions button.edit {
+            background-color: var(--cor-edicao-amarelo);
+            color: var(--cor-texto-preto);
+        }
+
+        .table-actions button.delete {
+            background-color: var(--cor-alerta-vermelho);
+            color: var(--cor-fundo-branco);
+        }
+
+        .gdrive-upload-container button {
+            background-color: #f4b400; /* Cor do Google Drive */
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .gdrive-upload-container button:hover {
+            background-color: #dba300;
+        }
+
+        .label-hint {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* LOADING SPINNER E MESSAGE BOX */
+        .loading-spinner {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(255, 255, 255, 0.8); display: flex;
+            justify-content: center; align-items: center; z-index: 9999;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .loading-spinner.visible { opacity: 1; visibility: visible; }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px;
+            border-radius: 50%; border-left-color: var(--cor-principal-verde);
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .message-box {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            padding: 10px 20px; border-radius: 5px; color: white; z-index: 10000;
+            opacity: 0; transition: opacity 0.5s, top 0.5s;
+        }
+        .message-box.success { background-color: var(--cor-sucesso-verde); }
+        .message-box.error { background-color: var(--cor-alerta-vermelho); }
+        .message-box.visible { opacity: 1; top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+
+    <header>
+        <h1><i class="fas fa-tools"></i> Painel de Administração</h1>
+        <a href="index.html" style="color: white; text-decoration: none; margin-top: 10px; display: inline-block;">&larr; Voltar ao Portal da Transparência</a>
+    </header>
+
+    <div class="container">
+        <!-- SEÇÃO DE ADIÇÃO E EDIÇÃO DE DOCUMENTOS -->
+        <div class="panel-section">
+            <h2 id="formTitle">Adicionar Novo Documento</h2>
+            <form id="documentForm">
+                <input type="hidden" id="documentId">
+                <div class="form-group">
+                    <label for="title">Título:</label>
+                    <input type="text" id="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descrição:</label>
+                    <textarea id="description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Documento do Google Drive:</label>
+                    <div class="gdrive-upload-container">
+                        <button type="button" id="openGoogleDriveBtn">
+                            <i class="fab fa-google-drive"></i> Ir para Google Drive
+                        </button>
+                    </div>
+                    <label for="documentUrlInput" class="label-hint">
+                        Cole a URL **pública** de compartilhamento do seu arquivo do Google Drive no campo abaixo.
+                    </label>
+                    <input type="url" id="documentUrlInput" placeholder="Cole a URL pública do documento aqui" required>
+                </div>
+                <div class="form-group">
+                    <label for="iconClass">Classe do Ícone (Font Awesome, ex: fas fa-file-invoice):</label>
+                    <input type="text" id="iconClass" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="submitButton" class="primary">Adicionar Documento</button>
+                    <button type="button" id="cancelEditButton" class="secondary" style="display: none;">Cancelar Edição</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- SEÇÃO DE DOCUMENTOS EXISTENTES -->
+        <div class="panel-section">
+            <h2>Documentos Existentes</h2>
+            <div id="documentsListContainer">
+                <p id="noDocumentsMessage" style="text-align: center; display: none;">Nenhum documento cadastrado ainda.</p>
+                <table class="document-table" id="documentsTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Descrição</th>
+                            <th>Ícone</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="documentsTableBody">
+                        <!-- Linhas da tabela serão carregadas aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+        import { getDatabase, ref, onValue, push, update, remove, get, child } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+
+        // SUA CONFIGURAÇÃO FIREBASE
+        const firebaseConfig = {
+          apiKey: "AIzaSyChgagT-tMJk9QZjMybdhd7F0pPKPsO7FM",
+          authDomain: "aprenda-b57c1.firebaseapp.com",
+          databaseURL: "https://aprenda-b57c1-default-rtdb.firebaseio.com",
+          projectId: "aprenda-b57c1",
+          storageBucket: "aprenda-b57c1.firebasestorage.app",
+          messagingSenderId: "757575583100",
+          appId: "1:757575583100:web:5aa397f8178230e069d0f9",
+          measurementId: "G-QEE5T90RM5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const appId = firebaseConfig.projectId;
+
+        let db;
+        let auth;
+        let userId = null;
+        let currentEditingDocId = null;
+
+        // ELEMENTOS DO DOM
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const documentForm = document.getElementById('documentForm');
+        const formTitle = document.getElementById('formTitle');
+        const documentIdInput = document.getElementById('documentId');
+        const titleInput = document.getElementById('title');
+        const descriptionInput = document.getElementById('description');
+        const openGoogleDriveBtn = document.getElementById('openGoogleDriveBtn');
+        const documentUrlInput = document.getElementById('documentUrlInput');
+        const iconClassInput = document.getElementById('iconClass');
+        const submitButton = document.getElementById('submitButton');
+        const cancelEditButton = document.getElementById('cancelEditButton');
+        const documentsTable = document.getElementById('documentsTable');
+        const documentsTableBody = document.getElementById('documentsTableBody');
+        const noDocumentsMessage = document.getElementById('noDocumentsMessage');
+
+        // --- FUNÇÕES AUXILIARES ---
+        function showLoading() { loadingSpinner.classList.add('visible'); }
+        function hideLoading() { loadingSpinner.classList.remove('visible'); }
+        function showMessage(message, type = 'success') {
+            const box = document.createElement('div');
+            box.className = `message-box ${type}`;
+            box.textContent = message;
+            document.body.appendChild(box);
+            setTimeout(() => box.classList.add('visible'), 10);
+            setTimeout(() => {
+                box.classList.remove('visible');
+                box.addEventListener('transitionend', () => box.remove());
+            }, 3000);
+        }
+
+        // --- LÓGICA DO PAINEL DE ADMINISTRAÇÃO ---
+        function clearAdminForm() {
+            documentForm.reset();
+            documentIdInput.value = '';
+            currentEditingDocId = null;
+            formTitle.textContent = 'Adicionar Novo Documento';
+            submitButton.textContent = 'Adicionar Documento';
+            cancelEditButton.style.display = 'none';
+        }
+
+        function renderAdminTableDocuments(documents) {
+            documentsTableBody.innerHTML = '';
+            if (documents.length === 0) {
+                documentsTable.style.display = 'none';
+                noDocumentsMessage.style.display = 'block';
+            } else {
+                documentsTable.style.display = 'table';
+                noDocumentsMessage.style.display = 'none';
+                documents.forEach(docData => {
+                    const row = documentsTableBody.insertRow();
+                    row.dataset.id = docData.id;
+                    row.innerHTML = `
+                        <td>${docData.title}</td>
+                        <td>${docData.description.substring(0, 100)}${docData.description.length > 100 ? '...' : ''}</td>
+                        <td><i class="${docData.iconClass}"></i> ${docData.iconClass}</td>
+                        <td class="table-actions">
+                            <button class="edit" data-id="${docData.id}"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="delete" data-id="${docData.id}"><i class="fas fa-trash-alt"></i> Excluir</button>
+                        </td>
+                    `;
+                });
+            }
+        }
+        
+        // --- FUNÇÕES FIREBASE ---
+        async function initializeAppLogic() {
+            try {
+                db = getDatabase(app);
+                auth = getAuth(app);
+                
+                // Autenticação anônima para permitir escrita no banco de dados
+                await signInAnonymously(auth);
+
+                onAuthStateChanged(auth, user => {
+                    if (user) {
+                        userId = user.uid;
+                        console.log("Admin autenticado anonimamente:", userId);
+                        setupRealtimeListeners(); // Inicia os listeners após autenticar
+                    } else {
+                        console.error("Falha na autenticação anônima. A escrita não será permitida.");
+                        showMessage("Erro de autenticação. Verifique as configurações do Firebase.", "error");
+                    }
+                });
+            } catch (error) {
+                console.error("Erro ao inicializar Firebase:", error);
+                showMessage("Erro fatal ao carregar o app. Verifique o console.", 'error');
+            }
+        }
+
+        function setupRealtimeListeners() {
+            showLoading();
+            const documentsRef = ref(db, `artifacts/${appId}/public/data/documents`);
+            onValue(documentsRef, (snapshot) => {
+                const fetchedDocuments = [];
+                snapshot.forEach((childSnapshot) => {
+                    fetchedDocuments.push({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+                renderAdminTableDocuments(fetchedDocuments);
+                hideLoading();
+            }, (error) => {
+                console.error("Erro ao ler dados do Realtime Database:", error);
+                showMessage("Erro ao carregar documentos.", 'error');
+                hideLoading();
+            });
+        }
+        
+        documentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!userId) {
+                showMessage("Não autenticado. Não é possível salvar.", "error");
+                return;
+            }
+            showLoading();
+            const docData = {
+                title: titleInput.value.trim(),
+                description: descriptionInput.value.trim(),
+                documentUrl: documentUrlInput.value.trim(),
+                iconClass: iconClassInput.value.trim(),
+            };
+
+            try {
+                const documentsRef = ref(db, `artifacts/${appId}/public/data/documents`);
+                if (currentEditingDocId) {
+                    const docRef = child(documentsRef, currentEditingDocId);
+                    await update(docRef, docData);
+                    showMessage('Documento atualizado com sucesso!', 'success');
+                } else {
+                    docData.timestamp = Date.now();
+                    const newDocRef = push(documentsRef);
+                    await update(newDocRef, docData);
+                    showMessage('Documento adicionado com sucesso!', 'success');
+                }
+                clearAdminForm();
+            } catch (error) {
+                console.error("Erro ao salvar documento:", error);
+                showMessage(`Erro ao salvar: ${error.message}`, 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+        
+        documentsTableBody.addEventListener('click', async (e) => {
+            const button = e.target.closest('button');
+            if (!button) return;
+
+            const docId = button.dataset.id;
+            if (button.classList.contains('edit')) {
+                const docRef = ref(db, `artifacts/${appId}/public/data/documents/${docId}`);
+                const snapshot = await get(docRef);
+                if (snapshot.exists()) {
+                    const docData = snapshot.val();
+                    documentIdInput.value = docId;
+                    titleInput.value = docData.title;
+                    descriptionInput.value = docData.description;
+                    documentUrlInput.value = docData.documentUrl;
+                    iconClassInput.value = docData.iconClass;
+                    currentEditingDocId = docId;
+                    formTitle.textContent = 'Editar Documento';
+                    submitButton.textContent = 'Atualizar Documento';
+                    cancelEditButton.style.display = 'inline-block';
+                    window.scrollTo(0, 0); // Rola para o topo para ver o formulário
+                }
+            } else if (button.classList.contains('delete')) {
+                if (confirm('Tem certeza que deseja excluir este documento?')) {
+                    deleteDocument(docId);
+                }
+            }
+        });
+
+        async function deleteDocument(docId) {
+            showLoading();
+            try {
+                const docRef = ref(db, `artifacts/${appId}/public/data/documents/${docId}`);
+                await remove(docRef);
+                showMessage('Documento excluído com sucesso!', 'success');
+            } catch (error) {
+                console.error("Erro ao excluir documento:", error);
+                showMessage(`Erro ao excluir: ${error.message}`, 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // --- EVENT LISTENERS ADICIONAIS ---
+        cancelEditButton.addEventListener('click', clearAdminForm);
+        openGoogleDriveBtn.addEventListener('click', () => {
+            window.open('https://drive.google.com/drive/my-drive', '_blank');
+        });
+
+        // Inicializa a aplicação
+        initializeAppLogic();
+    </script>
+</body>
+</html>
+
