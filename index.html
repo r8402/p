@@ -62,6 +62,27 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Classe para manter a proporção de uma página A4 */
+        .aspect-a4 {
+            position: relative;
+            width: 100%;
+            /* A proporção de uma página A4 é aproximadamente 1:1.414 (largura:altura).
+               Então, para uma largura de 100%, a altura será 141.42% da largura. */
+            padding-bottom: 141.42%; 
+            overflow: hidden; /* Garante que qualquer conteúdo extra seja cortado */
+        }
+
+        .aspect-a4 iframe { /* Alterado para iframe */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            /* iframe não usa object-fit, mas o overflow: hidden no pai e scrolling="no" no iframe
+               já controlam o que é visível e se pode rolar. */
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen bg-gray-100 text-gray-800">
@@ -71,29 +92,46 @@
     </div>
 
     <!-- Header Section -->
-    <header class="relative bg-gradient-to-br from-green-600 to-blue-600 text-white p-8 md:p-12 text-center shadow-lg overflow-hidden flex flex-col items-center justify-center">
+    <header class="relative bg-gradient-to-br from-green-600 to-blue-600 text-white pt-20 pb-12 md:pt-28 md:pb-16 text-center shadow-lg overflow-hidden flex flex-col items-center">
         <!-- Background Overlay for Effect -->
         <div class="absolute inset-0 bg-white opacity-5 transform -skew-y-3 z-0"></div>
         
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-2 relative z-10 flex items-center justify-center gap-3">
-            <i class="fas fa-graduation-cap text-green-200"></i> Portal da Transparência
-        </h1>
-        <p class="text-lg md:text-xl font-light mb-8 relative z-10">Secretaria de Educação</p>
+        <!-- Logomarca da Prefeitura (Canto superior esquerdo) -->
+        <img 
+            src="https://raw.githubusercontent.com/r8402/p/refs/heads/main/logopref.png" 
+            alt="Logomarca da Prefeitura" 
+            class="absolute top-4 left-4 h-12 md:h-16 z-20 object-contain"
+        >
+
+        <!-- Logomarca da Secretaria de Educação (Canto superior direito) -->
+        <img 
+            src="https://raw.githubusercontent.com/r8402/p/refs/heads/main/logosemes.png" 
+            alt="Logomarca da Secretaria de Educação" 
+            class="absolute top-4 right-4 h-12 md:h-16 z-20 object-contain"
+        >
         
-        <!-- Search Bar -->
-        <div class="relative z-10 flex w-full max-w-xl shadow-md rounded-lg overflow-hidden">
-            <input 
-                type="text" 
-                id="searchInput" 
-                placeholder="Pesquisar documentos por título ou descrição..." 
-                class="flex-grow p-3 text-lg bg-white bg-opacity-20 text-white placeholder-gray-200 border-none focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
-            >
-            <button 
-                id="searchButton" 
-                class="bg-white text-blue-600 px-5 py-3 text-lg font-semibold hover:bg-blue-100 transition-colors duration-200 flex items-center gap-2"
-            >
-                <i class="fas fa-search"></i>
-            </button>
+        <!-- Contêiner para o título, subtítulo e barra de pesquisa, empurrando-os para baixo -->
+        <div class="flex flex-col items-center relative z-10 mt-2">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-2">
+                Portal da Transparência
+            </h1>
+            <p class="text-lg md:text-xl font-light mb-8">Secretaria de Educação de Saubara</p>
+            
+            <!-- Search Bar -->
+            <div class="relative flex w-full max-w-xl shadow-md rounded-lg overflow-hidden">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Pesquisar documentos por título ou descrição..." 
+                    class="flex-grow p-3 text-lg bg-white bg-opacity-20 text-white placeholder-gray-200 border-none focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
+                >
+                <button 
+                    id="searchButton" 
+                    class="bg-white text-blue-600 px-5 py-3 text-lg font-semibold hover:bg-blue-100 transition-colors duration-200 flex items-center gap-2"
+                >
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -101,7 +139,6 @@
     <div class="container mx-auto p-4 md:p-8 pt-6 md:pt-10 flex-grow"> 
         
         <!-- Document Grid -->
-        <!-- Adicionado 'justify-center' para centralizar os balões (cards) em telas menores -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-center" id="documentGrid">
             <!-- Os cards dos documentos serão inseridos aqui pelo JavaScript -->
             <p id="noPublicDocumentsMessage" class="text-center text-gray-600 text-xl col-span-full mt-8 hidden">
@@ -174,6 +211,7 @@
                     const fileIdIndex = pathParts.indexOf('d') + 1;
                     if (fileIdIndex > 0 && pathParts[fileIdIndex]) {
                         const fileId = pathParts[fileIdIndex];
+                        // URL de preview do Google Drive para iframe
                         return `https://drive.google.com/file/d/${fileId}/preview`;
                     }
                 }
@@ -191,20 +229,10 @@
          */
         function createDocumentCard(doc) {
             const card = document.createElement('div');
-            // Classes Tailwind para estilização do card:
-            // bg-white: fundo branco
-            // rounded-xl: bordas arredondadas maiores
-            // shadow-lg: sombra mais proeminente
-            // overflow-hidden: esconde conteúdo que exceda as bordas
-            // transform: permite transições suaves (para hover)
-            // hover:scale-105: aumenta ligeiramente no hover
-            // hover:shadow-2xl: sombra maior no hover
-            // transition-all duration-300: transição suave para todas as propriedades em 300ms
-            // flex flex-col: usa flexbox para organizar o conteúdo verticalmente
-            // border-t-8 border-green-500: borda superior verde mais grossa
             card.className = 'bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 hover:shadow-2xl transition-all duration-300 flex flex-col border-t-8 border-green-500';
             
-            const embedUrl = getEmbeddableUrl(doc.documentUrl);
+            const embedUrl = getEmbeddableUrl(doc.documentUrl); // Usa a URL embeddable para o iframe
+            const documentDownloadUrl = doc.documentUrl; // URL original para download completo
 
             card.innerHTML = `
                 <div class="p-5 md:p-6 bg-gray-50 border-b border-gray-200 flex items-center gap-4">
@@ -213,20 +241,24 @@
                 </div>
                 <div class="p-5 md:p-6 flex-grow">
                     <p class="text-gray-700 mb-4 text-base">${doc.description}</p>
-                    <div class="w-full h-56 md:h-64 bg-gray-100 rounded-lg overflow-hidden border border-gray-300 flex items-center justify-center text-gray-500 text-sm">
+                    <!-- Contêiner da pré-visualização - Agora com iframe, proporção A4 e sem rolagem -->
+                    <div class="aspect-a4 bg-gray-100 rounded-lg border border-gray-300 flex items-center justify-center">
                         <iframe 
                             src="${embedUrl}" 
                             title="Pré-visualização de ${doc.title}" 
                             loading="lazy" 
                             sandbox="allow-scripts allow-same-origin"
                             class="w-full h-full border-0"
-                            onerror="this.src='https://placehold.co/400x250/F8F8F8/888888?text=Erro+ao+carregar+pr%C3%A9-visualiza%C3%A7%C3%A3o'"
+                            scrolling="no" /* Garante que a rolagem esteja desativada */
+                            style="overflow: hidden;" /* Complementar para garantir que a rolagem esteja desativada */
+                            onerror="this.src='https://placehold.co/400x566/F8F8F8/888888?text=Erro+ao+carregar+pr%C3%A9-visualiza%C3%A7%C3%A3o'" /* Placeholder para erro no iframe */
                         ></iframe>
                     </div>
                 </div>
-                <div class="p-5 md:p-6 bg-gray-50 border-t border-gray-200 text-right">
+                <!-- Rodapé do documento - Centralizado -->
+                <div class="p-5 md:p-6 bg-gray-50 border-t border-gray-200 flex justify-center items-center">
                     <a 
-                        href="${doc.documentUrl}" 
+                        href="${documentDownloadUrl}" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         class="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg font-bold text-lg hover:bg-green-700 transition-colors duration-200 shadow-md hover:shadow-lg"
