@@ -86,7 +86,6 @@
             width: 100%;
             height: 100%;
             background: transparent; /* Totalmente transparente */
-            z-index: 10; /* Acima do iframe, mas abaixo do conteúdo do card */
             pointer-events: auto; /* Garante que ele capture eventos do ponteiro */
         }
     </style>
@@ -136,7 +135,7 @@
                     class="bg-white text-blue-600 px-5 py-3 text-lg font-semibold hover:bg-blue-100 flex items-center gap-2"
                 >
                     <!-- Ícone de pesquisa SVG inline -->
-                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </button>
             </div>
         </div>
@@ -250,19 +249,19 @@
                             sandbox="allow-scripts allow-same-origin"
                             class="w-full h-full border-0"
                             scrolling="no" /* Garante que a rolagem esteja desativada */
-                            style="overflow: hidden;" /* Complementar para garantir que a rolagem esteja desativada */
+                            style="overflow: hidden; z-index: 1;" /* Complementar para garantir que a rolagem esteja desativada e z-index */
                             onerror="this.src='https://placehold.co/400x566/F8F8F8/888888?text=Erro+ao+carregar+pr%C3%A9-visualiza%C3%A7%C3%A3o'" /* Placeholder para erro no iframe */
                         ></iframe>
                         <!-- Overlay transparente para desabilitar a rolagem na pré-visualização -->
-                        <div class="transparent-overlay"></div>
+                        <div class="transparent-overlay" style="z-index: 10;"></div>
                     </div>
                     <!-- Overlay com título, descrição e botão de download -->
-                    <div class="absolute inset-x-0 bottom-0 text-white flex flex-col items-center justify-end rounded-b-xl">
+                    <div class="absolute inset-x-0 bottom-0 text-white flex flex-col items-center justify-end rounded-b-xl" style="z-index: 20;">
                         <div class="w-full bg-black bg-opacity-75 p-4">
                             <h3 class="text-xl md:text-2xl font-semibold leading-tight mb-1 text-center">${doc.title}</h3>
                             <p class="text-sm text-gray-200 text-center">${doc.description}</p>
                         </div>
-                        <div class="w-full bg-black bg-opacity-75 pt-0 pb-4 px-4"> <!-- Ajustado padding e adicionado fundo transparente -->
+                        <div class="w-full bg-black bg-opacity-75 pt-0 pb-4 px-4">
                             <a
                                 href="${documentDownloadUrl}"
                                 target="_blank"
@@ -358,3 +357,4 @@
     </script>
 </body>
 </html>
+
