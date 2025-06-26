@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secretaria de Educação - Portal da Transparência</title>
     <link rel="icon" type="image/png" href="SEMES.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -26,7 +24,7 @@
         @tailwind utilities;
 
         html, body {
-            font-family: 'Inter', sans-serif; /* Usando Inter para um visual mais moderno */
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* Usando fonte do sistema */
             scroll-behavior: smooth;
         }
 
@@ -44,7 +42,7 @@
             z-index: 9999;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Adicionada transição para suavidade */
         }
         .loading-spinner.visible {
             opacity: 1;
@@ -67,9 +65,7 @@
         .aspect-a4 {
             position: relative;
             width: 100%;
-            /* A proporção de uma página A4 é aproximadamente 1:1.414 (largura:altura).
-               Então, para uma largura de 100%, a altura será 141.42% da largura. */
-            padding-bottom: 141.42%; 
+            padding-bottom: 141.42%; /* Proporção de uma página A4 (altura = 1.4142 * largura) */
             overflow: hidden; /* Garante que qualquer conteúdo extra seja cortado */
         }
 
@@ -80,8 +76,6 @@
             width: 100%;
             height: 100%;
             border: none;
-            /* iframe não usa object-fit, mas o overflow: hidden no pai e scrolling="no" no iframe
-               já controlam o que é visível e se pode rolar. */
         }
     </style>
 </head>
@@ -92,52 +86,52 @@
     </div>
 
     <!-- Header Section -->
-    <header class="relative bg-gradient-to-br from-green-600 to-blue-600 text-white pt-20 pb-12 md:pt-28 md:pb-16 text-center shadow-lg overflow-hidden flex flex-col items-center">
+    <header class="relative bg-gradient-to-br from-green-600 to-blue-600 text-white pt-16 pb-8 md:pt-20 md:pb-12 text-center shadow-lg overflow-hidden flex flex-col items-center">
         <!-- Background Overlay for Effect -->
-        <div class="absolute inset-0 bg-white opacity-5 transform -skew-y-3 z-0"></div>
-        
+        <div class="absolute inset-0 bg-white opacity-5 z-0"></div>
+
         <!-- Logomarca da Prefeitura (Canto superior esquerdo) -->
-        <img 
-            src="https://raw.githubusercontent.com/r8402/p/refs/heads/main/logopref.png" 
-            alt="Logomarca da Prefeitura" 
+        <img
+            src="logopref.png"
+            alt="Logomarca da Prefeitura"
             class="absolute top-4 left-4 h-12 md:h-16 z-20 object-contain"
         >
 
         <!-- Logomarca da Secretaria de Educação (Canto superior direito) -->
-        <img 
-            src="https://raw.githubusercontent.com/r8402/p/refs/heads/main/logosemes.png" 
-            alt="Logomarca da Secretaria de Educação" 
+        <img
+            src="SEMES.png"
+            alt="Logomarca da Secretaria de Educação"
             class="absolute top-4 right-4 h-12 md:h-16 z-20 object-contain"
         >
-        
+
         <!-- Contêiner para o título, subtítulo e barra de pesquisa, empurrando-os para baixo -->
         <div class="flex flex-col items-center relative z-10 mt-2">
             <h1 class="text-4xl md:text-5xl font-extrabold mb-2">
                 Portal da Transparência
             </h1>
             <p class="text-lg md:text-xl font-light mb-8">Secretaria de Educação de Saubara</p>
-            
+
             <!-- Search Bar -->
             <div class="relative flex w-full max-w-xl shadow-md rounded-lg overflow-hidden">
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    placeholder="Pesquisar documentos por título ou descrição..." 
-                    class="flex-grow p-3 text-lg bg-white bg-opacity-20 text-white placeholder-gray-200 border-none focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Pesquisar documentos por título ou descrição..."
+                    class="flex-grow p-3 text-lg bg-white bg-opacity-20 text-white placeholder-gray-200 border-none focus:outline-none focus:ring-2 focus:ring-blue-300"
                 >
-                <button 
-                    id="searchButton" 
-                    class="bg-white text-blue-600 px-5 py-3 text-lg font-semibold hover:bg-blue-100 transition-colors duration-200 flex items-center gap-2"
+                <button
+                    id="searchButton"
+                    class="bg-white text-blue-600 px-5 py-3 text-lg font-semibold hover:bg-blue-100 flex items-center gap-2"
                 >
-                    <i class="fas fa-search"></i>
+                    <!-- Ícone de pesquisa SVG inline -->
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Main Content Container -->
-    <div class="container mx-auto p-4 md:p-8 pt-6 md:pt-10 flex-grow"> 
-        
+    <div class="container mx-auto p-4 md:p-8 pt-6 md:pt-10 flex-grow">
         <!-- Document Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-center" id="documentGrid">
             <!-- Os cards dos documentos serão inseridos aqui pelo JavaScript -->
@@ -168,14 +162,13 @@
           appId: "1:757575583100:web:5aa397f8178230e069d0f9",
           measurementId: "G-QEE5T90RM5"
         };
-        
+
         // --- INICIALIZAÇÃO E LÓGICA DA PÁGINA ---
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const appId = firebaseConfig.projectId;
 
         let allPublicDocuments = []; // Armazena todos os documentos para filtragem
-
         // ELEMENTOS DO DOM
         const loadingSpinner = document.getElementById('loadingSpinner');
         const documentGrid = document.getElementById('documentGrid');
@@ -187,17 +180,17 @@
         /**
          * Exibe o spinner de carregamento.
          */
-        function showLoading() { 
-            loadingSpinner.classList.add('visible'); 
+        function showLoading() {
+            loadingSpinner.classList.add('visible');
         }
 
         /**
          * Oculta o spinner de carregamento.
          */
-        function hideLoading() { 
-            loadingSpinner.classList.remove('visible'); 
+        function hideLoading() {
+            loadingSpinner.classList.remove('visible');
         }
-        
+
         /**
          * Tenta converter uma URL do Google Drive para um formato incorporável (preview).
          * @param {string} url - A URL do documento.
@@ -229,24 +222,19 @@
          */
         function createDocumentCard(doc) {
             const card = document.createElement('div');
-            card.className = 'bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 hover:shadow-2xl transition-all duration-300 flex flex-col border-t-8 border-green-500';
-            
-            const embedUrl = getEmbeddableUrl(doc.documentUrl); // Usa a URL embeddable para o iframe
+            card.className = 'bg-white rounded-xl shadow-lg overflow-hidden flex flex-col border-t-8 border-green-500';
+
+            const embedUrl = getEmbeddableUrl(doc.documentUrl); // Usa a URL incorporável para o iframe
             const documentDownloadUrl = doc.documentUrl; // URL original para download completo
 
             card.innerHTML = `
-                <div class="p-5 md:p-6 bg-gray-50 border-b border-gray-200 flex items-center gap-4">
-                    <i class="text-4xl ${doc.iconClass} text-blue-500"></i>
-                    <h3 class="text-xl md:text-2xl font-semibold text-gray-900 flex-grow">${doc.title}</h3>
-                </div>
-                <div class="p-5 md:p-6 flex-grow">
-                    <p class="text-gray-700 mb-4 text-base">${doc.description}</p>
+                <div class="relative w-full">
                     <!-- Contêiner da pré-visualização - Agora com iframe, proporção A4 e sem rolagem -->
                     <div class="aspect-a4 bg-gray-100 rounded-lg border border-gray-300 flex items-center justify-center">
-                        <iframe 
-                            src="${embedUrl}" 
-                            title="Pré-visualização de ${doc.title}" 
-                            loading="lazy" 
+                        <iframe
+                            src="${embedUrl}"
+                            title="Pré-visualização de ${doc.title}"
+                            loading="lazy"
                             sandbox="allow-scripts allow-same-origin"
                             class="w-full h-full border-0"
                             scrolling="no" /* Garante que a rolagem esteja desativada */
@@ -254,17 +242,25 @@
                             onerror="this.src='https://placehold.co/400x566/F8F8F8/888888?text=Erro+ao+carregar+pr%C3%A9-visualiza%C3%A7%C3%A3o'" /* Placeholder para erro no iframe */
                         ></iframe>
                     </div>
-                </div>
-                <!-- Rodapé do documento - Centralizado -->
-                <div class="p-5 md:p-6 bg-gray-50 border-t border-gray-200 flex justify-center items-center">
-                    <a 
-                        href="${documentDownloadUrl}" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg font-bold text-lg hover:bg-green-700 transition-colors duration-200 shadow-md hover:shadow-lg"
-                    >
-                        <i class="fas fa-download"></i> Baixar Documento
-                    </a>
+                    <!-- Overlay com título, descrição e botão de download -->
+                    <div class="absolute inset-x-0 bottom-0 text-white flex flex-col items-center justify-end rounded-b-xl">
+                        <div class="w-full bg-black bg-opacity-75 p-4">
+                            <h3 class="text-xl md:text-2xl font-semibold leading-tight mb-1 text-center">${doc.title}</h3>
+                            <p class="text-sm text-gray-200 text-center">${doc.description}</p>
+                        </div>
+                        <div class="w-full bg-black bg-opacity-75 pt-0 pb-4 px-4"> <!-- Ajustado padding e adicionado fundo transparente -->
+                            <a
+                                href="${documentDownloadUrl}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="w-full flex items-center justify-center gap-2 bg-green-600 text-white py-2 rounded-lg font-bold text-base hover:bg-green-700"
+                            >
+                                <!-- Ícone de download SVG inline -->
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                Baixar Documento
+                            </a>
+                        </div>
+                    </div>
                 </div>
             `;
             return card;
@@ -278,7 +274,7 @@
             documentGrid.innerHTML = ''; // Limpa o grid
             if (documentsToRender.length === 0) {
                 // Exibe mensagem de "nenhum documento" se não houver documentos ou a pesquisa não retornar resultados
-                const message = searchInput.value.trim() 
+                const message = searchInput.value.trim()
                     ? `Nenhum documento encontrado para "<strong>${searchInput.value.trim()}</strong>".`
                     : "Nenhum documento disponível no momento.";
                 noPublicDocumentsMessage.innerHTML = message;
@@ -302,7 +298,7 @@
                     doc.description.toLowerCase().includes(searchTerm)
                 )
                 : allPublicDocuments; // Se o termo de pesquisa estiver vazio, exibe todos
-            
+
             renderPublicDocuments(filtered);
         }
 
@@ -325,7 +321,7 @@
 
                 // Ordena os documentos pelos mais recentes (assumindo um timestamp existe)
                 allPublicDocuments = fetchedDocuments.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-                
+
                 filterPublicDocuments(); // Renderiza os documentos (filtrados ou todos)
                 hideLoading(); // Oculta o spinner
             }, (error) => {
@@ -342,11 +338,9 @@
         searchInput.addEventListener('input', filterPublicDocuments);
         // Adiciona um listener para o clique no botão de pesquisa (também chama o filtro)
         searchButton.addEventListener('click', filterPublicDocuments);
-        
+
         // Inicia a aplicação quando o DOM estiver completamente carregado
         window.addEventListener('load', loadInitialData);
-
     </script>
 </body>
 </html>
-
