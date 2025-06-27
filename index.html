@@ -17,7 +17,6 @@
             --color-detail-lightgray: #f8f9fa;
             --color-border-document: #dee2e6;
         }
-
         /* Configurações Tailwind para usar variáveis CSS */
         @tailwind base;
         @tailwind components;
@@ -255,23 +254,38 @@
                         <!-- Overlay transparente para desabilitar a rolagem na pré-visualização -->
                         <div class="transparent-overlay" style="z-index: 10;"></div>
                     </div>
-                    <!-- Overlay com título, descrição e botão de download -->
+                    <!-- Overlay com título, descrição e botões de ação -->
                     <div class="absolute inset-x-0 bottom-0 text-white flex flex-col items-center justify-end rounded-b-xl" style="z-index: 20;">
                         <div class="w-full bg-black bg-opacity-75 p-4">
                             <h3 class="text-xl md:text-2xl font-semibold leading-tight mb-1 text-center">${doc.title}</h3>
                             <p class="text-sm text-gray-200 text-center">${doc.description}</p>
                         </div>
                         <div class="w-full bg-black bg-opacity-75 pt-0 pb-4 px-4">
-                            <a
-                                href="${documentDownloadUrl}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="w-full flex items-center justify-center gap-2 bg-green-600 text-white py-2 rounded-lg font-bold text-base hover:bg-green-700"
-                            >
-                                <!-- Ícone de download SVG inline -->
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                                Baixar Documento
-                            </a>
+                            <div class="flex rounded-lg overflow-hidden shadow-md">
+                                <!-- Botão Baixar (Esquerda, Azul) -->
+                                <a
+                                    href="${documentDownloadUrl}"
+                                    download
+                                    class="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-2 font-bold text-base hover:bg-blue-700"
+                                >
+                                    <!-- Ícone de download SVG inline -->
+                                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                    Baixar
+                                </a>
+                                <!-- Divisor -->
+                                <div class="w-px bg-blue-500"></div>
+                                <!-- Botão Abrir (Direita, Verde) -->
+                                <a
+                                    href="${documentDownloadUrl}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="flex-1 flex items-center justify-center gap-2 bg-green-600 text-white py-2 font-bold text-base hover:bg-green-700"
+                                >
+                                    <!-- Ícone de abrir em nova aba SVG inline -->
+                                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                    Abrir
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -357,4 +371,3 @@
     </script>
 </body>
 </html>
-
