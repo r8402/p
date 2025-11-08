@@ -1,0 +1,28 @@
+{
+  "background_color": "#ffffff",
+  "description": "Converta vídeos do Youtube para arquivos MP4 gratuitamente com nosso conversor do Youtube",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "yt5s",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "yt5s",
+  "start_url": "https://yt5s.in/pt258/youtube-to-mp4",
+  "theme_color": "#1d2b40",
+  "icons": [
+    {
+      "src": "https://yt5s.in/theme/yt5s/images/favicon.png",
+      "type": "image/png",
+      "sizes": "64x64",
+      "isSquare": true,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 64,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": false
+    }
+  ],
+  "lang": "pt"
+}
